@@ -1,7 +1,8 @@
 #pragma once
 
-#include "point.hpp"
 #include <memory>
+#include "point.hpp"
+
 
 template<Scalar T>
 class Figure {
