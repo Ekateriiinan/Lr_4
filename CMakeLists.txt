@@ -17,8 +17,8 @@ add_library(figures
 add_executable(main_app main.cpp)
 target_link_libraries(main_app figures)
 
-# add_executable(tests tests.cpp)
-target_link_libraries(tests figures GTest::gtest_main)
+add_executable(tests tests.cpp) 
+target_link_libraries(tests figures GTest::gtest GTest::gtest_main)
 
 include(GoogleTest)
 gtest_discover_tests(tests)
