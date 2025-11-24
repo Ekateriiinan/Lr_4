@@ -6,12 +6,12 @@
 template<typename T>
 class Array {
 private:
-    T* data;
+    std::unique_ptr<T[]> data; 
     size_t capacity;
     size_t size;
     
-    void resize(size_t newCapacity);
-    
+    void resize(size_t newCapacity);\
+
 public:
     Array();
     Array(size_t initialCapacity);
@@ -19,7 +19,6 @@ public:
     Array& operator=(const Array& other);
     Array(Array&& other) noexcept;
     Array& operator=(Array&& other) noexcept;
-    ~Array();
     
     void push_back(const T& value);
     void push_back(T&& value);
