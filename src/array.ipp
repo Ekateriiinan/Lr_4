@@ -1,6 +1,6 @@
 template<typename T>
 void Array<T>::resize(size_t newCapacity) {
-    std::shared_ptr<T[]> newData(new T[newCapacity]);
+    std::unique_ptr<T[]> newData(new T[newCapacity]);
     
     for (size_t i = 0; i < size; ++i) {
         newData[i] = std::move(data[i]);
@@ -15,12 +15,12 @@ Array<T>::Array() : data(nullptr), capacity(0), size(0) {}
 
 template<typename T>
 Array<T>::Array(size_t initialCapacity) : capacity(initialCapacity), size(0) {
-    data = std::shared_ptr<T[]>(new T[capacity]);
+    data = std::unique_ptr<T[]>(new T[capacity]);
 }
 
 template<typename T>
 Array<T>::Array(const Array& other) : capacity(other.capacity), size(other.size) {
-    data = std::shared_ptr<T[]>(new T[capacity]);
+    data = std::unique_ptr<T[]>(new T[capacity]);
     for (size_t i = 0; i < size; ++i) {
         data[i] = other.data[i];
     }
@@ -33,7 +33,7 @@ Array<T>& Array<T>::operator=(const Array& other) {
         
         capacity = other.capacity;
         size = other.size;
-        data = std::shared_ptr<T[]>(new T[capacity]);
+        data = std::unique_ptr<T[]>(new T[capacity]);
         for (size_t i = 0; i < size; ++i) {
             data[i] = other.data[i];
         }
@@ -44,9 +44,9 @@ Array<T>& Array<T>::operator=(const Array& other) {
 template<typename T>
 Array<T>::Array(Array&& other) noexcept 
     : data(std::move(other.data)), capacity(other.capacity), size(other.size) {
+    other.data = nullptr;
     other.capacity = 0;
     other.size = 0;
-    other.data = nullptr;
 }
 
 template<typename T>
@@ -56,9 +56,9 @@ Array<T>& Array<T>::operator=(Array&& other) noexcept {
         capacity = other.capacity;
         size = other.size;
         
+        other.data = nullptr;
         other.capacity = 0;
         other.size = 0;
-        other.data = nullptr;
     }
     return *this;
 }
